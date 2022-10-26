@@ -10,17 +10,17 @@ https://nodejs.org/en/download/
 
 -
 
-After installation, step into the root directory and run the following commands one time to set up the application:
+After installation, step into the root directory and run the following command to set up the application:
 
-npm install 
+"npm install" 
 
-npm install -g nodemon (optional, allows for easier testing)
+(you may also run the command "npm install -g nodemon" which allows for easier testing)
 
 -
 
 To run the application (from within the root directory) run the following command:
 
-nodemon app (or) node app
+"node app" (or "nodemon app")
 
 -
 
