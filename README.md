@@ -8,12 +8,12 @@ After installation, step into the root directory and run "npm install" to set up
 
 -
 
-To run the application (from within the root directory) run either of the following commands:
+To start the application (from within the root directory) run either of the following commands:
 
 "node app" or "nodemon app" (if you installed it)
 
 -
 
-A list of files in the data directory will be displayed on the command-line;
+A list of files in the data directory will now be displayed on the command-line,
 
-enter a valid filename and the application will start on http://localhost:4155/
+enter a valid filename and the application will start running on http://localhost:4155/
