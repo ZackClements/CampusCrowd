@@ -21,3 +21,9 @@ npm install -g nodemon (optional, allows for easier testing)
 To run the application (from within the root directory) run the following command:
 
 nodemon app (or) node app
+
+-
+
+A list of files in the data directory will be displayed on the command-line; enter a valid filename and the application will start on
+
+localhost:4155
