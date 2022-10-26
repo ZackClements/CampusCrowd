@@ -1,12 +1,4 @@
-﻿This
-application
-uses
-NodeJS and npm.
-Please
-install
-by
-visiting
-https://nodejs.org/en/download/
+﻿This application uses NodeJS and npm. Please install by visiting https://nodejs.org/en/download/
 
 -
 
