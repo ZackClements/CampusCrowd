@@ -24,6 +24,4 @@ nodemon app (or) node app
 
 -
 
-A list of files in the data directory will be displayed on the command-line; enter a valid filename and the application will start on
-
-localhost:4155
+A list of files in the data directory will be displayed on the command-line; enter a valid filename and the application will start on http://localhost:4155/
