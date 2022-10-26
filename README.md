@@ -17,3 +17,7 @@ To start the application (from within the root directory) run either of the foll
 A list of files in the data directory will now be displayed on the command-line,
 
 enter a valid filename and the application will start running on http://localhost:4155/
+
+-
+
+Note that a free Google API key is being used, so there is a watermark ("For development purposes only") on the map.
