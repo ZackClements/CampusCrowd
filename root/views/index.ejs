@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Campus Crowd</title>
+        <!-- Mobile Device Viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=0.01">
+        <!-- External -->
+        <link rel="icon" type="image/x-icon" href="/images/uncc.png">
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+        <!-- script src="/javascript/script.js"></script -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="/javascript/external/heatmap.js"></script>
+        <script src="/javascript/external/gmaps-heatmap.js"></script>
+    </head>
+    <body>
+        <header>
+            <h3>Campus Crowd</h3>
+        </header>
+        <main>
+            <%
+                let str = JSON_weight.substring(1).slice(0, -1);
+                const arr = str.split(",");
+                let k = []; // locations
+                let v = []; // connections
+                let lat = []; // latitude
+                let lng = []; // longitude
+                let reK = /^[^:]+:\s*/g; // regex for chars before colon
+                let reV = /:(.*)/g; // regex for chars after colon
+
+                // generate locations and connections
+                for (let i=0; i < arr.length; i++){
+                    let str = arr[i];
+                    let _newK = str.match(reK);
+                    let fK = _newK.toString().substring(1).slice(0, -2);
+                    k.push(fK);
+                    let _newV = str.match(reV);
+                    let fV = _newV.toString().substring(1);
+                    v.push(fV);
+                }
+
+                // fix coordinates to locations
+                for (let i=0; i < arr.length; i++){
+                    if (k[i]=="Atki"){
+                        lat.push(35.305746);
+                        lng.push(-80.732146);
+                    }
+                    else if (k[i]=="Duke"){
+                        lat.push(35.311927);
+                        lng.push(-80.741154);
+                    }
+                    else if (k[i]=="StuU"){
+                        lat.push(35.308603);
+                        lng.push(-80.733723);
+                    }
+                    else if (k[i]=="AtkiG"){
+                        lat.push(35.305991);
+                        lng.push(-80.732742);
+                    }
+                    else if (k[i]=="StuUM"){
+                        lat.push(35.307846);
+                        lng.push(-80.733711);
+                    }
+                    else if (k[i]=="Kenn"){
+                        lat.push(35.305969);
+                        lng.push(-80.730933);
+                    }
+                    else if (k[i]=="Cato"){
+                        lat.push(35.305434);
+                        lng.push(-80.728730);
+                    }
+                    else if (k[i]=="Scie"){
+                        lat.push(35.308482);
+                        lng.push(-80.730029);
+                    }
+                    else if (k[i]=="Moto"){
+                        lat.push(35.312614);
+                        lng.push(-80.740266);
+                    }
+                    else if (k[i]=="AtkiL"){
+                        lat.push(35.305667);
+                        lng.push(-80.731668);
+                    }
+                    else if (k[i]=="McEn"){
+                        lat.push(35.307097);
+                        lng.push(-80.730157);
+                    }
+                    else if (k[i]=="EXT"){
+                        lat.push(35.301441);
+                        lng.push(-80.731297);
+                    }
+                    else if (k[i]=="Biss"){
+                        lat.push(35.301056);
+                        lng.push(-80.738977);
+                    }
+                    else if (k[i]=="LibW"){
+                        lat.push(35.304879);
+                        lng.push(-80.732245);
+                    }
+                }
+                // set max weight (# of connections)
+                let max = Math.max(...v);
+            %>
+            <div id="map"></div>
+            <script>
+               let options = {zoom: 15.25, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
+                map = new google.maps.Map(document.getElementById("map"), options); // create new map
+                // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
+                heatmap = new HeatmapOverlay(map, 
+                  {
+                    "radius": 0.0035,
+                    "maxOpacity": 0.6, 
+                    "scaleRadius": true,
+                    "useLocalExtrema": false,
+                    latField: 'lat',
+                    lngField: 'lng',
+                    valueField: 'weight'
+                  }
+                );
+                // set max 
+                var max = <%- max -%>;
+                // set weights (connections)
+                var connections = [];
+                <%
+                  for (let i=0; i < v.length; i++){
+                    %> connections.push(<%=v[i]%>); <%
+                  }
+                %>
+                // set latitudes
+                var latitude = [];
+                <%
+                  for (let i=0; i < v.length; i++){
+                    %> latitude.push(<%=lat[i]%>); <%
+                  }
+                %>
+                // set longitudes
+                var longitude = [];
+                <%
+                  for (let i=0; i < v.length; i++){
+                    %> longitude.push(<%=lng[i]%>); <%
+                  }
+                %>
+                // generate data to be passed into setData()
+                var data = [];
+                for (let i =0; i < connections.length; i++){
+                    let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
+                    data.push(obj);
+                }
+                var wifiData = {
+                  max: max,
+                  data: data
+                };
+                heatmap.setData(wifiData); 
+            </script>
+            <br><table id="data">
+                <tr>
+                    <th>Location</th>
+                    <th>Connections</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                </tr>
+                <!-- populate table with data -->
+                <% for (let i = 0; i < arr.length; i++) { %>
+                    <tr>
+                        <td><%= k[i]%></td>
+                        <td><%= v[i]%></td>
+                        <td><%= lat[i]%></td>
+                        <td><%= lng[i]%></td>
+                    </tr>
+                <% } %>
+            </table>
+            </main>
+        <footer>
+            <p>ITSC 4155 Capstone Project - Group 15</p>
+        </footer>
+    </body>
+</html>
