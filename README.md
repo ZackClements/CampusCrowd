@@ -21,3 +21,7 @@ enter a valid filename and the application will start running on http://localhos
 -
 
 Note that a free Google API key is being used, so there is a watermark ("For development purposes only") on the map.
+
+-
+
+When pushing, please exclude the node_modules folder
