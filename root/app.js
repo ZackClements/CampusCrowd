@@ -7,6 +7,7 @@ const app = express();
 
 // to view application, navigate to http://localhost:4155/
 let port = 4155;
+let port2 = 3333;
 let host = 'localhost';
 app.set('view engine', 'ejs');
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded( {extended: true}));
 const weight = {}; // object map for buildings and weight (of connections)
 let JSON_weight = ""; // to store weight in JSON format to pass to view
 let keys = []; // stores unique buildings as strings
+let in_between = []; // all words in between vertical bars
 let upper_words = []; // all uppercase words (to simplify regex)
 let exact_location_uf = []; // stores unformatted exact location (building name + room # + excess characters)
 let exact_location_f = []; // stores formatted exact location (building name + room #)
@@ -25,6 +27,8 @@ let general_location = []; // stores formatted exact location (building name)
 let reU = /[A-Z]\S*/g; // regex for uppercase words
 let reE = /^[^_]+(?=_)/g; // regex for characters before underscore
 let reG = /([^\d]+)/g; // regex for characters before digit
+let reP = /[^|]+/g; //regex for characters between vertical bars
+let reAZ = /[^a-zA-Z]/g; // regex for non alpha
 
 async function prompt_async() {
     let valid = false;
@@ -50,7 +54,10 @@ async function prompt_async() {
     // call main logic
     if (valid) {
         let path = './data/' + filename;
-        generate(path); 
+        if (filename.startsWith("wireless")){
+            generate2(path);
+        }
+        else {generate(path);}
     }
     // restart
     else {
@@ -61,7 +68,7 @@ async function prompt_async() {
     }
 }
 
-// main logic
+// main logic for meraki
 async function generate(filename) {
     // start application
     app.listen(port, host, ()=>{
@@ -120,6 +127,69 @@ async function generate(filename) {
         // calculate weight (number of connections per building)
         for (i=0; i<general_location.length; i++){
             let k = general_location[i];
+            for (j=0; j<keys.length; j++){
+                if (k == keys[j]){weight[k]++;}
+            }
+        }
+
+        // format and display data
+        JSON_weight = JSON.stringify(weight);
+        console.log("number of connections per building:");
+        console.log(weight);
+        return weight;
+
+    // error handler
+    } catch (err) {
+        console.log(err);
+    }
+}
+// main logic for wireless
+async function generate2(filename) {
+    // start application
+    app.listen(port, host, ()=>{
+        console.log("\n------------------------");
+        console.log('| running on port',port,'|');
+        console.log('------------------------\n'); // decoration 
+    });
+    try {
+        // parse data file
+        const contents = await fsPromises.readFile(filename, 'utf-8');
+        const data = contents.split(/\r?\n/);
+
+        // account for excess lines
+        data.pop(); // remove trailing blank line
+
+        // capture words inbetween bars  
+        for (i=0; i<data.length; i++){
+            let str = data[i];
+            let _new = str.match(reP);
+            let _newL = _new.length;
+            let s = _new[1];
+            if (s != "aaa" && s != "ids"){
+                if (_newL == 3){
+                    let ss = s.substring(2);
+                    if (ss.startsWith(" EXT-")){
+                        ss = ss.substring(5);
+                    }
+                    else {
+                        ss = ss.substring(1);
+                    }
+                    let buil = ss.split(reAZ)[0];
+                    in_between.push(buil);
+                }
+            }
+        }
+        // find unique buildings
+        keys = [... new Set(in_between)];
+
+        // create JSON data structure
+        for (i=0; i<keys.length; i++){
+            weight[keys[i]] = 0;
+        }
+
+        // calculate weight (number of connections per building)
+        for (i=0; i<in_between.length; i++){
+            let k = in_between[i];
             for (j=0; j<keys.length; j++){
                 if (k == keys[j]){weight[k]++;}
             }
