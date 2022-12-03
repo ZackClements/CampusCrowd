@@ -22,9 +22,9 @@ main {
 table {
     border: 1px solid #ccc;
     border-collapse: collapse;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
-    width: 100%;
+    width: 100%; 
     table-layout: fixed;
 }
 
@@ -38,12 +38,14 @@ table th,
 table td {
     padding: .255em;
     text-align: center;
+    text-align:left;
 }
 
 table th {
     font-size: .85em;
     letter-spacing: .1em;
     text-transform: uppercase;
+    text-align:left;
 }
 
 footer {

@@ -22,6 +22,7 @@
                 let str = JSON_weight.substring(1).slice(0, -1);
                 const arr = str.split(",");
                 let k = []; // locations
+                let names = []; // names
                 let v = []; // connections
                 let lat = []; // latitude
                 let lng = []; // longitude
@@ -42,60 +43,721 @@
                 // fix coordinates to locations
                 for (let i=0; i < arr.length; i++){
                     if (k[i]=="Atki"){
+                        names.push("Atkins Library");
                         lat.push(35.305746);
                         lng.push(-80.732146);
                     }
                     else if (k[i]=="Duke"){
+                        names.push("Duke Centennial Hall");
                         lat.push(35.311927);
                         lng.push(-80.741154);
                     }
                     else if (k[i]=="StuU"){
+                        names.push("Popp Martin Student Union");
                         lat.push(35.308603);
                         lng.push(-80.733723);
                     }
                     else if (k[i]=="AtkiG"){
+                        names.push("Atkins Library - Ground");
                         lat.push(35.305991);
                         lng.push(-80.732742);
                     }
                     else if (k[i]=="StuUM"){
+                        names.push("Student Union - Middle");
                         lat.push(35.307846);
                         lng.push(-80.733711);
                     }
                     else if (k[i]=="Kenn"){
+                        names.push("Kennedy");
                         lat.push(35.305969);
                         lng.push(-80.730933);
                     }
                     else if (k[i]=="Cato"){
+                        names.push("Cato College of Education");
                         lat.push(35.305434);
                         lng.push(-80.728730);
                     }
                     else if (k[i]=="Scie"){
+                        names.push("Science Building");
                         lat.push(35.308482);
                         lng.push(-80.730029);
                     }
                     else if (k[i]=="Moto"){
+                        names.push("Motorsports Research");
                         lat.push(35.312614);
                         lng.push(-80.740266);
                     }
                     else if (k[i]=="AtkiL"){
+                        names.push("Atkins Library - Lower");
                         lat.push(35.305667);
                         lng.push(-80.731668);
                     }
                     else if (k[i]=="McEn"){
+                        names.push("McEniry");
                         lat.push(35.307097);
                         lng.push(-80.730157);
                     }
                     else if (k[i]=="EXT"){
-                        lat.push(35.301441);
-                        lng.push(-80.731297);
+                        names.push("Bissel House - Exit");
+                        lat.push(35.301056);
+                        lng.push(-80.738977);
                     }
                     else if (k[i]=="Biss"){
+                        names.push("Bissel House - Chancellor's Residence");
                         lat.push(35.301056);
                         lng.push(-80.738977);
                     }
                     else if (k[i]=="LibW"){
+                        names.push("Atkins Library - Walkway");
                         lat.push(35.304879);
                         lng.push(-80.732245);
+                    }
+                    for (let i=0; i < arr.length; i++){
+                        if (k[i]=="Atki"){
+                            names.push("Atkins Library");
+                            lat.push(35.305746);
+                            lng.push(-80.732146);
+                        }
+                        else if (k[i]=="Duke"){
+                            names.push("Duke Centennial Hall");
+                            lat.push(35.311927);
+                            lng.push(-80.741154);
+                        }
+                        else if (k[i]=="StuU"){
+                            names.push("Popp Martin Student Union");
+                            lat.push(35.308603);
+                            lng.push(-80.733723);
+                        }
+                        else if (k[i]=="AtkiG"){
+                            names.push("Atkins Library - Ground");
+                            lat.push(35.305991);
+                            lng.push(-80.732742);
+                        }
+                        else if (k[i]=="StuUM"){
+                            names.push("Student Union - Middle");
+                            lat.push(35.307846);
+                            lng.push(-80.733711);
+                        }
+                        else if (k[i]=="Kenn"){
+                            names.push("Kennedy");
+                            lat.push(35.305969);
+                            lng.push(-80.730933);
+                        }
+                        else if (k[i]=="Cato"){
+                            names.push("Cato College of Education");
+                            lat.push(35.305434);
+                            lng.push(-80.728730);
+                        }
+                        else if (k[i]=="Scie"){
+                            names.push("Science Building");
+                            lat.push(35.308482);
+                            lng.push(-80.730029);
+                        }
+                        else if (k[i]=="Moto"){
+                            names.push("Motorsports Research");
+                            lat.push(35.312614);
+                            lng.push(-80.740266);
+                        }
+                        else if (k[i]=="AtkiL"){
+                            names.push("Atkins Library - Lower");
+                            lat.push(35.305667);
+                            lng.push(-80.731668);
+                        }
+                        else if (k[i]=="McEn"){
+                            names.push("McEniry");
+                            lat.push(35.307097);
+                            lng.push(-80.730157);
+                        }
+                        else if (k[i]=="EXT"){
+                            names.push("Bissel House - Exit");
+                            lat.push(35.301056);
+                            lng.push(-80.738977);
+                        }
+                        else if (k[i]=="Biss"){
+                            names.push("Bissel House - Chancellor's Residence");
+                            lat.push(35.301056);
+                            lng.push(-80.738977);
+                        }
+                        else if (k[i]=="LibW"){
+                            names.push("Atkins Library - Walkway");
+                            lat.push(35.304879);
+                            lng.push(-80.732245);
+                        }
+                        else if (k[i] == "Rees") {
+                            names.push("Reese");
+                             lat.push(35.3046865);
+                             lng.push(-80.7325075);
+                        }
+                          else if (k[i] == "Fret") {
+                        
+                            names.push("Fretwell");
+                             lat.push(35.30609617329542);
+                             lng.push(-80.72905836119102);
+                        }
+                          else if (k[i] == "Scot") {
+                        
+                            names.push("Scott Hall");
+                             lat.push(35.301745442516655);
+                             lng.push(-80.73536472973072);
+                        }
+                          else if (k[i] == "HunH") {
+                        
+                            names.push("Hunt Hall");
+                             lat.push(35.3014512904921);
+                             lng.push(-80.73649720639536);
+                        }
+                          else if (k[i] == "Foun") {
+                        
+                            names.push("Foundation");
+                             lat.push(35.29794910569405);
+                             lng.push(-80.73691568215568);
+                        }
+                          else if (k[i] == "Colv") {
+                        
+                            names.push("Colvard");
+                             lat.push(35.3047288);
+                             lng.push(-80.7318175);
+                        }
+                          else if (k[i] == "Gari") {
+                        
+                            names.push("Garinger");
+                             lat.push(35.30501426437236);
+                             lng.push(-80.73020795332306);
+                        }
+                          else if (k[i] == "MilH") {
+                        
+                            names.push("Miltmore Hall");
+                             lat.push(35.31120445845271);
+                             lng.push(-80.73546086850881);
+                        }
+                          else if (k[i] == "Cone") {
+                        
+                            names.push("Cone University Center");
+                             lat.push(35.30539145277517);
+                             lng.push(-80.73321607933849);
+                        }
+                          else if (k[i] == "King") {
+                        
+                            names.push("King");
+                             lat.push(35.305075897472854);
+                             lng.push(-80.73257741691799);
+                        }
+                          else if (k[i] == "CoEd") {
+                        
+                            names.push("Cato College of Education");
+                             lat.push(35.30759045861732);
+                             lng.push(-80.73413267874088);
+                        }
+                          else if (k[i] == "Levi") {
+                        
+                            names.push("Levine Hall");
+                             lat.push(35.302890925010665);
+                             lng.push(-80.73313648024713);
+                        }
+                          else if (k[i] == "Grig") {
+                        
+                            names.push("Grigg Hall");
+                             lat.push(35.31128413499671);
+                             lng.push(-80.7418437948065);
+                        }
+                          else if (k[i] == "BelGPool") {
+                        
+                            names.push("Belk Gym Pool");
+                             lat.push(35.30533877292375);
+                             lng.push(-80.73559950455898);
+                        }
+                          else if (k[i] == "BursBOIL") {
+                        
+                            names.push("Burson Boiler Building");
+                             lat.push(35.30739649766536);
+                             lng.push(-80.7323005232744);
+                        }
+                          else if (k[i] == "Came") {
+                        
+                            names.push("Cameron Hall");
+                             lat.push(35.30766893240503);
+                             lng.push(-80.73125757789353);
+                        }
+                          else if (k[i] == "BelH") {
+                        
+                            names.push("Belk Hall");
+                             lat.push(35.31020420511571);
+                             lng.push(-80.73513844953378);
+                        }
+                          else if (k[i] == "Stor") {
+                        
+                            names.push("Storrs");
+                             lat.push(35.30457871751996);
+                             lng.push(-80.72920178915456);
+                        }
+                          else if (k[i] == "BURS") {
+                        
+                            names.push("Burson");
+                             lat.push(35.30739649766536);
+                             lng.push(-80.7323005232744);
+                        }
+                          else if (k[i] == "Smit") {
+                        
+                            names.push("Smith");
+                             lat.push(35.30694979430145);
+                             lng.push(-80.73154882607298);
+                        }
+                          else if (k[i] == "Winn") {
+                        
+                            names.push("Winningham");
+                             lat.push(35.30510282119657);
+                             lng.push(-80.73044941939384);
+                        }
+                          else if (k[i] == "Faci") {
+                        
+                            names.push("Facilities Management");
+                             lat.push(35.312010426369376);
+                             lng.push(-80.73049088977476);
+                        }
+                          else if (k[i] == "EPIC") {
+                        
+                            names.push("EPIC");
+                             lat.push(35.31189811943846);
+                             lng.push(-80.74119004392253);
+                        }
+                          else if (k[i] == "Kenn") {
+                        
+                            names.push("Kennedy");
+                             lat.push(35.30600024819842);
+                             lng.push(-80.73095771546309);
+                        }
+                          else if (k[i] == "PORT") {
+                        
+                            names.push("PORTAL");
+                             lat.push(35.311692789354176);
+                             lng.push(-80.74298916559158);
+                        }
+                          else if (k[i] == "MSII") {
+                        
+                            names.push("Military Science");
+                             lat.push(35.303758090594165);
+                             lng.push(-80.73590696050901);
+                        }
+                          else if (k[i] == "Tenn") {
+                        
+                            names.push("Halton-Wagner Tennis Complex");
+                             lat.push(35.307403467038604);
+                             lng.push(-80.73740777078115);
+                        }
+                          else if (k[i] == "BaTF") {
+                        
+                            names.push("Transamerica Field - Baseball");
+                             lat.push(35.30811487469631);
+                             lng.push(-80.73903712726472);
+                        }
+                          else if (k[i] == "AtkiG") {
+                        
+                            names.push("Atkins Library - Ground");
+                             lat.push(35.30568834722959);
+                             lng.push(-80.73163656423831);
+                        }
+                          else if (k[i] == "StuH") {
+                        
+                            names.push("Student Health Center");
+                             lat.push(35.3105524918975);
+                             lng.push(-80.72958746698107);
+                        }
+                          else if (k[i] == "CenC") {
+                        
+                            names.push("Center City Building");
+                             lat.push(35.22837561149495);
+                             lng.push(-80.83494731884977);
+                        }
+                          else if (k[i] == "Bioi") {
+                        
+                            names.push("Bioinformatics");
+                             lat.push(35.3125545);
+                             lng.push(-80.741512);
+                        }
+                         else if (k[i] == "Auxi") {
+                        
+                            names.push("Auxiliary Services Building");
+                             lat.push(35.30766993673688);
+                             lng.push(-80.73048107918797);
+                        }
+                          else if (k[i] == "Pros") {
+                        
+                            names.push("Prospector");
+                             lat.push(35.306545047508436);
+                             lng.push(-80.73089474281956);
+                        }
+                          else if (k[i] == "Wach") {
+                        
+                            names.push("Wachovia Lot");
+                             lat.push(35.30674961000998);
+                             lng.push(-80.73789627786617);
+                        }
+                          else if (k[i] == "AtkiL") {
+                        
+                            names.push("Atkins Library - Lower");
+                             lat.push(35.30581244989182);
+                             lng.push(-80.73242085552589);
+                        }
+                          else if (k[i] == "RUP") {
+                        
+                            names.push("Regional Utility Plant");
+                             lat.push(35.30034922462913);
+                             lng.push(-80.73550624762174);
+                        }
+                          else if (k[i] == "Rece") {
+                        
+                            names.push("Receiving & Stores");
+                             lat.push(35.31429031164012);
+                             lng.push(-80.73383991982728);
+                        }
+                          else if (k[i] == "Hick") {
+                        
+                            names.push("Hickory Hall");
+                             lat.push(35.30920918659618);
+                             lng.push(-80.72900305289947);
+                        }
+                          else if (k[i] == "EPICG") {
+                        
+                            names.push("EPIC - Ground");
+                             lat.push(35.30893850523969);
+                             lng.push(-80.74144019949817);
+                        }
+                          else if (k[i] == "MiltA") {
+                        
+                            names.push("Miltmore Hall");
+                             lat.push(35.311110707418734);
+                             lng.push(-80.73541348525717);
+                        }
+                          else if (k[i] == "Wood") {
+                        
+                            names.push("Woodward");
+                             lat.push(35.30714938477803);
+                             lng.push(-80.73571149971485);
+                        }
+                          else if (k[i] == "Irwi") {
+                        
+                            names.push("Irwin Belk Track & Field");
+                             lat.push(35.3055340318995);
+                             lng.push(-80.73760639279563);
+                        }
+                          else if (k[i] == "Heal") {
+                        
+                            names.push("College of Health & Human Services");
+                             lat.push(35.30740406450089);
+                             lng.push(-80.73336972100714);
+                        }
+                          else if (k[i] == "StuU") {
+                        
+                            names.push("Popp Martin Student Union");
+                             lat.push(35.30846924954434);
+                             lng.push(-80.73380308668398);
+                        }
+                          else if (k[i] == "Syca") {
+                        
+                            names.push("Sycamore Hall");
+                             lat.push(35.308845791469416);
+                             lng.push(-80.72899591410679);
+                        }
+                          else if (k[i] == "BelG") {
+                        
+                            names.push("Belk Gym");
+                             lat.push(35.30536214924615);
+                             lng.push(-80.73561251662721);
+                        }
+                          else if (k[i] == "Wall") {
+                        
+                            names.push("Wallis Hall");
+                             lat.push(35.31147075717193);
+                             lng.push(-80.73396322431611);
+                        }
+                          else if (k[i] == "Harr") {
+                        
+                            names.push("Harris Alumni Center");
+                             lat.push(35.30273474608917);
+                             lng.push(-80.73870538593044);
+                        }
+                          else if (k[i] == "Robi") {
+                        
+                            names.push("Robinson Hall");
+                             lat.push(35.30375735741013);
+                             lng.push(-80.72992203994481);
+                        }
+                          else if (k[i] == "Rowe") {
+                        
+                            names.push("Rowe");
+                             lat.push(35.30444513210468);
+                             lng.push(-80.7308401321233);
+                        }
+                          else if (k[i] == "Lync") {
+                        
+                            names.push("Lynch Hall");
+                             lat.push(35.310200558605175);
+                             lng.push(-80.73371371440811);
+                        }
+                          else if (k[i] == "Memo") {
+                        
+                            names.push("Memorial Hall");
+                             lat.push(35.30373048465129);
+                             lng.push(-80.73589463996213);
+                        }
+                          else if (k[i] == "UREC") {
+                        
+                            names.push("University Recreation Center");
+                             lat.push(35.30831292797602);
+                             lng.push(-80.73541667969782);
+                        }
+                          else if (k[i] == "StuA") {
+                        
+                            names.push("Student Activity Center");
+                             lat.push(35.30625938227615);
+                             lng.push(-80.73445998972124);
+                        }
+                          else if (k[i] == "Gage") {
+                        
+                            names.push("Gage Undergraduate Admissions");
+                             lat.push(35.30111581484298);
+                             lng.push(-80.733002577923);
+                        }
+                          else if (k[i] == "Hous") {
+                        
+                            names.push("Housing & Resident Life");
+                             lat.push(35.30211038685805);
+                             lng.push(-80.73360840569094);
+                        }
+                          else if (k[i] == "SVDH") {
+                        
+                            names.push("South Village Dining Hall - SoVi");
+                             lat.push(35.302832777094864);
+                             lng.push(-80.7349231756767);
+                        }
+                          else if (k[i] == "SoTF") {
+                        
+                            names.push("Transamerica Field - Soccer");
+                             lat.push(35.30556073286457);
+                             lng.push(-80.73762479072461);
+                        }
+                          else if (k[i] == "McCoC") {
+                        
+                            names.push("McColl-Richardson Field - Concessions");
+                             lat.push(35.31045181086794);
+                             lng.push(-80.74011182694231);
+                        }
+                          else if (k[i] == "GRIG") {
+                        
+                            names.push("Grigg Hall");
+                             lat.push(35.31125721169039);
+                             lng.push(-80.74183274370174);
+                        }
+                          else if (k[i] == "Duke") {
+                        
+                            names.push("Duke Centennial Hall");
+                             lat.push(35.3118332291368);
+                             lng.push(-80.74119850767313);
+                        }
+                          else if (k[i] == "Denn") {
+                        
+                            names.push("Denny");
+                             lat.push(35.30533295968176);
+                             lng.push(-80.72980795887034);
+                        }
+                          else if (k[i] == "Unio") {
+                        
+                            names.push("Union Deck");
+                             lat.push(35.30915355927649);
+                             lng.push(-80.73522839767031);
+                        }
+                          else if (k[i] == "With") {
+                        
+                            names.push("Witherspoon Hall");
+                             lat.push(35.31091281659303);
+                             lng.push(-80.73230276211463);
+                        }
+                          else if (k[i] == "Frid") {
+                        
+                            names.push("Friday");
+                             lat.push(35.30628511732297);
+                             lng.push(-80.72997554801233);
+                        }
+                          else if (k[i] == "Mart") {
+                        
+                            names.push("Martin Hall");
+                             lat.push(35.30993975891089);
+                             lng.push(-80.72745035992615);
+                        }
+                          else if (k[i] == "Atki") {
+                        
+                            names.push("Atkins Library");
+                             lat.push(35.30577741371217);
+                             lng.push(-80.73237528157458);
+                        }
+                          else if (k[i] == "Macy") {
+                        
+                            names.push("Macy");
+                             lat.push(35.305738003574184);
+                             lng.push(-80.73047515456338);
+                        }
+                          else if (k[i] == "Coun") {
+                        
+                            names.push("Price Counseling Center");
+                             lat.push(35.310251760035584);
+                             lng.push(-80.73006844660692);
+                        }
+                          else if (k[i] == "Cafe") {
+                        
+                            names.push("Cafeteria Activities Building");
+                             lat.push(35.30905807801118);
+                             lng.push(-80.72819881504607);
+                        }
+                          else if (k[i] == "Ceda") {
+                        
+                            names.push("Cedar Hall");
+                             lat.push(35.3095532);
+                             lng.push(-80.7289938);
+                        }
+                          else if (k[i] == "FOPS") {
+                        
+                            names.push("Facilities Operations & Parking Services");
+                             lat.push(35.314182346671856);
+                             lng.push(-80.73272456401536);
+                        }
+                          else if (k[i] == "Laur") {
+                        
+                            names.push("Laurel Hall");
+                             lat.push(35.302517699178985);
+                             lng.push(-80.73595446556496);
+                        }
+                          else if (k[i] == "NERF") {
+                        
+                            names.push("Northeast Recreational Field Complex");
+                             lat.push(35.31344100794077);
+                             lng.push(-80.72319983871316);
+                        }
+                          else if (k[i] == "Phil") {
+                        
+                            names.push("D.L Phillips Complex");
+                             lat.push(35.30683657536748);
+                             lng.push(-80.7397596328187);
+                        }
+                          else if (k[i] == "FouA") {
+                        
+                            names.push("Foundation Annex");
+                             lat.push(35.2981335);
+                             lng.push(-80.7360096);
+                        }
+                          else if (k[i] == "McMi") {
+                        
+                            names.push("McMillan Greenhouse");
+                             lat.push(35.3078127);
+                             lng.push(-80.7297808);
+                        }
+                          else if (k[i] == "Band") {
+                        
+                            names.push("Johnson Band Center");
+                             lat.push(35.307240);
+                             lng.push(-80.729310);
+                        }
+                          else if (k[i] == "BandCor") {
+                        
+                            names.push("Johnson Band Center - Corridor");
+                             lat.push(35.307240);
+                             lng.push(-80.729310);
+                        }
+                          else if (k[i] == "McEn") {
+                        
+                            names.push("McEniry");
+                             lat.push(35.307110);
+                             lng.push(-80.730080);
+                        }
+                          else if (k[i] == "Cato") {
+                        
+                            names.push("Cato Hall");
+                             lat.push(35.305438140458115);
+                             lng.push(-80.72874586871069);
+                        }
+                         else if (k[i] == "FaciA") {
+                        
+                            names.push("Facilities Management");
+                             lat.push(35.314100);
+                             lng.push(-80.732600);
+                        }
+                          else if (k[i] == "Barn") {
+                        
+                            names.push("Barnard");
+                             lat.push(35.305800);
+                             lng.push(-80.730030);
+                        }
+                          else if (k[i] == "FacA") {
+                        
+                            names.push("Facilities Management");
+                             lat.push(35.314100);
+                             lng.push(-80.732600);
+                        }
+                          else if (k[i] == "BelGMain") {
+                        
+                            names.push("Belk Gym - Main");
+                             lat.push(35.30533877292375);
+                             lng.push(-80.73559950455898);
+                        }
+                          else if (k[i] == "EHS") {
+                        
+                            names.push("Environmental Health & Safety");
+                             lat.push(35.312660);
+                             lng.push(-80.730080);
+                        }
+                          else if (k[i] == "JBui") {
+                        
+                            names.push("Facilities Annex One - J-Building");
+                             lat.push(35.312074673261264);
+                             lng.push(-80.73049956290934);
+                        }
+                          else if (k[i] == "McCo") {
+                        
+                            names.push("McColl-Richardson Field");
+                             lat.push(35.31061414580404);
+                             lng.push(-80.74024765706898);
+                        }
+                          else if (k[i] == "Nine") {
+                        
+                            names.push("Niner House");
+                             lat.push(35.30411966275528);
+                             lng.push(-80.72776917094374);
+                        }
+                          else if (k[i] == "Burs") {
+                        
+                            names.push("Burson");
+                             lat.push(35.30739649766536);
+                             lng.push(-80.7323005232744);
+                        }
+                          else if (k[i] == "BelGGym") {
+                        
+                            names.push("Belk Gym - Gymnasium");
+                             lat.push(35.30533877292375);
+                             lng.push(-80.73559950455898);
+                        }
+                          else if (k[i] == "East") {
+                        
+                            names.push("East Deck");
+                             lat.push(35.30538120328745);
+                             lng.push(-80.72684464471652);
+                        }
+                         else if (k[i] == "BelGRB") {
+                        
+                            names.push("Belk Gym - Racquetball");
+                             lat.push(35.30533877292375);
+                             lng.push(-80.73559950455898);
+                        }
+                          else if (k[i] == "CRI") {
+                        
+                            names.push("CRI Deck");
+                             lat.push(35.3092259550927);
+                             lng.push(-80.74338910878436);
+                        }
+                          else if (k[i] == "BioiVEST") {
+                        
+                            names.push("Bioinformatics");
+                             lat.push(35.3125545);
+                             lng.push(-80.741512);
+                        }
                     }
                 }
                 // set max weight (# of connections)
@@ -156,16 +818,12 @@
                 <tr>
                     <th>Location</th>
                     <th>Connections</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
                 </tr>
                 <!-- populate table with data -->
                 <% for (let i = 0; i < arr.length; i++) { %>
                     <tr>
-                        <td><%= k[i]%></td>
+                        <td><%= names[i]%></td>
                         <td><%= v[i]%></td>
-                        <td><%= lat[i]%></td>
-                        <td><%= lng[i]%></td>
                     </tr>
                 <% } %>
             </table>

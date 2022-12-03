@@ -175,7 +175,12 @@ async function generate2(filename) {
                         ss = ss.substring(1);
                     }
                     let buil = ss.split(reAZ)[0];
-                    in_between.push(buil);
+                    if (buil != "ster"){
+                        if (buil == "RE"){
+                            buil = "UREC";
+                        }
+                        in_between.push(buil);
+                    }
                 }
             }
         }
