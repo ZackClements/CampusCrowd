@@ -155,6 +155,9 @@ async function generate2(filename) {
         // parse data file
         const contents = await fsPromises.readFile(filename, 'utf-8');
         const data = contents.split(/\r?\n/);
+        let buil = "";
+        let time = "";
+        let time_map = new Map();
 
         // account for excess lines
         data.pop(); // remove trailing blank line
@@ -165,6 +168,7 @@ async function generate2(filename) {
             let _new = str.match(reP);
             let _newL = _new.length;
             let s = _new[1];
+            time = str.split(" ")[2].split(":")[0]; //24 hour time
             if (s != "aaa" && s != "ids"){
                 if (_newL == 3){
                     let ss = s.substring(2);
@@ -174,7 +178,7 @@ async function generate2(filename) {
                     else {
                         ss = ss.substring(1);
                     }
-                    let buil = ss.split(reAZ)[0];
+                    buil = ss.split(reAZ)[0];
                     if (buil != "ster"){
                         if (buil == "RE"){
                             buil = "UREC";
@@ -182,6 +186,12 @@ async function generate2(filename) {
                         in_between.push(buil);
                     }
                 }
+            }
+            let k = buil.concat(time, "");
+            if(time_map.get(k) === undefined){
+                time_map.set(k, 0);
+            } else {
+                time_map.set(k, time_map.get(k) + 1);
             }
         }
         // find unique buildings
