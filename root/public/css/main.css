@@ -123,3 +123,8 @@ a{
     width: 100%;
     color: rgb(255, 255, 255);
 }
+
+.red{
+    color:red;
+}
+.green{color: green;}

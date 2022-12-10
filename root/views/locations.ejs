@@ -601,10 +601,24 @@
                     </tr>
                     <!-- populate table with data -->
                     <% for (let i = 0; i < arr.length; i++) { %>
+                        <% if(v[i] >= 10000) {%>
                         <tr>
-                            <td><%= names[i]%></td>
-                            <td><%= v[i]%></td>
+                            <td class = "red"><%= names[i]%></td>
+                            <td class="red"><%= v[i]%></td>
                         </tr>
+                        <% } %>
+                        <% if(v[i]>= 1000 && v[i] < 10000) {%>
+                        <tr>
+                            <td class = "yellow"><%= names[i]%></td>
+                            <td class="yellow"><%= v[i]%></td>
+                        </tr>
+                        <% } %>
+                        <% if(v[i] < 1000) {%>
+                        <tr>
+                            <td class = "green"><%= names[i]%></td>
+                            <td class="green"><%= v[i]%></td>
+                        </tr>
+                        <% } %>
                     <% } %>
                 </table>
             </div>
