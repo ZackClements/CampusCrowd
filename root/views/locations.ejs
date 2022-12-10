@@ -43,6 +43,7 @@
                 <button  class="timeButton"  type="button">11 PM</button>
                 <button  class="timeButton"  type="button">12 AM</button>
             </div>
+
         </header>
         <main>
             <ul class="tabsContainer">
@@ -591,57 +592,22 @@
                 // set max weight (# of connections)
                 let max = Math.max(...v);
             %>
-            <div id="map"></div>
-            <script>
-               let options = {zoom: 17.17, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
-                map = new google.maps.Map(document.getElementById("map"), options); // create new map
-                // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
-                heatmap = new HeatmapOverlay(map, 
-                  {
-                    "radius": 0.0005,
-                    "maxOpacity": 0.6, 
-                    "scaleRadius": true,
-                    "useLocalExtrema": false,
-                    latField: 'lat',
-                    lngField: 'lng',
-                    valueField: 'weight'
-                  }
-                );
-                // set max 
-                var max = <%- max -%>;
-                // set weights (connections)
-                var connections = [];
-                <%
-                  for (let i=0; i < v.length; i++){
-                    %> connections.push(<%=v[i]%>); <%
-                  }
-                %>
-                // set latitudes
-                var latitude = [];
-                <%
-                  for (let i=0; i < v.length; i++){
-                    %> latitude.push(<%=lat[i]%>); <%
-                  }
-                %>
-                // set longitudes
-                var longitude = [];
-                <%
-                  for (let i=0; i < v.length; i++){
-                    %> longitude.push(<%=lng[i]%>); <%
-                  }
-                %>
-                // generate data to be passed into setData()
-                var data = [];
-                for (let i =0; i < connections.length; i++){
-                    let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
-                    data.push(obj);
-                }
-                var wifiData = {
-                  max: max,
-                  data: data
-                };
-                heatmap.setData(wifiData); 
-            </script>
+            
+            <div>
+                <table id="data">
+                    <tr>
+                        <th>Location</th>
+                        <th>Connections</th>
+                    </tr>
+                    <!-- populate table with data -->
+                    <% for (let i = 0; i < arr.length; i++) { %>
+                        <tr>
+                            <td><%= names[i]%></td>
+                            <td><%= v[i]%></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </div>
         </main>
         <footer>
             <p>ITSC 4155 Capstone Project - Group 15</p>
