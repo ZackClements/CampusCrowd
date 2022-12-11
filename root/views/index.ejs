@@ -80,7 +80,6 @@
             </script>
         </header>
         <main>
-            
             <%
                 let str = JSON_weight.substring(1).slice(0, -1);
                 const arr = str.split(",");
@@ -628,7 +627,7 @@
                 <div id="map"></div>
             </div>
                 <script>
-                let options = {zoom: 17.17, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
+                let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
                     map = new google.maps.Map(document.getElementById("map"), options); // create new map
                     // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
                     heatmap = new HeatmapOverlay(map, 
