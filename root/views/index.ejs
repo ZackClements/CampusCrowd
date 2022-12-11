@@ -43,12 +43,44 @@
                 <button  class="timeButton"  type="button">11 PM</button>
                 <button  class="timeButton"  type="button">12 AM</button>
             </div>
+            <div class="tabs">
+                <a href="#tab1" class="active">Map</a>
+                <a href="#tab2">Locations</a>
+            </div>
+            <script>
+                // Get all tab links
+                var tabLinks = document.querySelectorAll('.tabs a');
+                
+                // Add an event listener to each tab link
+                tabLinks.forEach(function(tabLink) {
+                    tabLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove the active class from all tab links
+                    tabLinks.forEach(function(tabLink) {
+                        tabLink.classList.remove('active');
+                    });
+                    
+                    // Add the active class to the clicked tab link
+                    this.classList.add('active');
+                    
+                    // Get the tab content
+                    var tabContent = document.querySelector(this.hash);
+                    
+                    // Hide all tab content
+                    var tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(function(tabContent) {
+                        tabContent.style.display = 'none';
+                    });
+                    
+                    // Show the clicked tab content
+                    tabContent.style.display = 'block';
+                    });
+                });
+            </script>
         </header>
         <main>
-            <ul class="tabsContainer">
-                <li><a href="/">Map</a></li>
-                <li><a href="/locations">Locations</a></li>
-            </ul>
+            
             <%
                 let str = JSON_weight.substring(1).slice(0, -1);
                 const arr = str.split(",");
@@ -591,57 +623,91 @@
                 // set max weight (# of connections)
                 let max = Math.max(...v);
             %>
-            <div id="map"></div>
-            <script>
-               let options = {zoom: 17.17, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
-                map = new google.maps.Map(document.getElementById("map"), options); // create new map
-                // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
-                heatmap = new HeatmapOverlay(map, 
-                  {
-                    "radius": 0.0005,
-                    "maxOpacity": 0.6, 
-                    "scaleRadius": true,
-                    "useLocalExtrema": false,
-                    latField: 'lat',
-                    lngField: 'lng',
-                    valueField: 'weight'
-                  }
-                );
-                // set max 
-                var max = <%- max -%>;
-                // set weights (connections)
-                var connections = [];
-                <%
-                  for (let i=0; i < v.length; i++){
-                    %> connections.push(<%=v[i]%>); <%
-                  }
-                %>
-                // set latitudes
-                var latitude = [];
-                <%
-                  for (let i=0; i < v.length; i++){
-                    %> latitude.push(<%=lat[i]%>); <%
-                  }
-                %>
-                // set longitudes
-                var longitude = [];
-                <%
-                  for (let i=0; i < v.length; i++){
-                    %> longitude.push(<%=lng[i]%>); <%
-                  }
-                %>
-                // generate data to be passed into setData()
-                var data = [];
-                for (let i =0; i < connections.length; i++){
-                    let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
-                    data.push(obj);
-                }
-                var wifiData = {
-                  max: max,
-                  data: data
-                };
-                heatmap.setData(wifiData); 
-            </script>
+            <div id="tab1" class="tab-content">
+                <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
+                <div id="map"></div>
+            </div>
+                <script>
+                let options = {zoom: 17.17, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
+                    map = new google.maps.Map(document.getElementById("map"), options); // create new map
+                    // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
+                    heatmap = new HeatmapOverlay(map, 
+                    {
+                        "radius": 0.0005,
+                        "maxOpacity": 0.6, 
+                        "scaleRadius": true,
+                        "useLocalExtrema": false,
+                        latField: 'lat',
+                        lngField: 'lng',
+                        valueField: 'weight'
+                    }
+                    );
+                    // set max 
+                    var max = <%- max -%>;
+                    // set weights (connections)
+                    var connections = [];
+                    <%
+                    for (let i=0; i < v.length; i++){
+                        %> connections.push(<%=v[i]%>); <%
+                    }
+                    %>
+                    // set latitudes
+                    var latitude = [];
+                    <%
+                    for (let i=0; i < v.length; i++){
+                        %> latitude.push(<%=lat[i]%>); <%
+                    }
+                    %>
+                    // set longitudes
+                    var longitude = [];
+                    <%
+                    for (let i=0; i < v.length; i++){
+                        %> longitude.push(<%=lng[i]%>); <%
+                    }
+                    %>
+                    // generate data to be passed into setData()
+                    var data = [];
+                    for (let i =0; i < connections.length; i++){
+                        let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
+                        data.push(obj);
+                    }
+                    var wifiData = {
+                    max: max,
+                    data: data
+                    };
+                    heatmap.setData(wifiData);
+                </script>
+
+            <div id="tab2" class="tab-content" style="display: none;">
+                 <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
+                <table id="data">
+                    <tr>
+                        <th>Location</th>
+                        <th>Connections</th>
+                    </tr>
+                    <!-- populate table with data -->
+                    <% for (let i = 0; i < arr.length; i++) { %>
+                        <% if(v[i] >= 10000) {%>
+                        <tr>
+                            <td class = "red"><%= names[i]%></td>
+                            <td class="red"><%= v[i]%></td>
+                        </tr>
+                        <% } %>
+                        <% if(v[i]>= 1000 && v[i] < 10000) {%>
+                        <tr>
+                            <td class = "yellow"><%= names[i]%></td>
+                            <td class="yellow"><%= v[i]%></td>
+                        </tr>
+                        <% } %>
+                        <% if(v[i] < 1000) {%>
+                        <tr>
+                            <td class = "green"><%= names[i]%></td>
+                            <td class="green"><%= v[i]%></td>
+                        </tr>
+                        <% } %>
+                    <% } %>
+                </table>
+            </div>
         </main>
         <footer>
             <p>ITSC 4155 Capstone Project - Group 15</p>
