@@ -1,4 +1,5 @@
 const {locations} = require("./locations");
+const {connection_time} = require("./src/connection_time");
 // dependencies
 const {readFileSync, promises: fsPromises} = require('fs');
 const fs = require('fs');
@@ -158,10 +159,16 @@ async function generate2(filename) {
         const data = contents.split(/\r?\n/);
         let buil = "";
         let time = "";
-        let time_map = new Map();
 
         // account for excess lines
         data.pop(); // remove trailing blank line
+
+        let time_map = new Map();
+        // Create a map with entries for each of the 24 possible values of time
+        for (let i = 0; i < 24; i++) {
+            let key = i < 10 ? `0${i}` : `${i}`;
+            time_map.set(key, []);
+        }
 
         // capture words inbetween bars  
         for (i=0; i<data.length; i++){
@@ -185,14 +192,9 @@ async function generate2(filename) {
                             buil = "UREC";
                         }
                         in_between.push(buil);
+                        connection_time(time.toString(), buil, time_map);
                     }
                 }
-            }
-            let k = buil.concat(time, "");
-            if(time_map.get(k) === undefined){
-                time_map.set(k, 0);
-            } else {
-                time_map.set(k, time_map.get(k) + 1);
             }
         }
         // find unique buildings
