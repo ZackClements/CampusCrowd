@@ -171,6 +171,38 @@
 
             <div id="tab2" class="tab-content" style="display: none;">
                  <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
+
+            <input type="search" id="search" name="search" placeholder="Search Locations" class="searchBar">
+
+
+                <script>
+                    var searchInput = document.getElementById('search');
+                    var searchQuery;
+
+                    searchInput.addEventListener('keyup', doSearch);
+                        
+                    function doSearch() {
+                        searchQuery = searchInput.value;
+                        filterTable();
+                    }
+                    
+                    function filterTable() {
+                        var table = document.getElementById("data");
+                        var rows = table.getElementsByTagName("tr");
+
+                        for (var i = 0; i < rows.length; i++) {
+                            var nameCell = rows[i].getElementsByTagName("td")[0];
+                            if (nameCell) {
+                                if (nameCell.innerHTML.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1) {
+                                    rows[i].style.display = "";
+                                } else {
+                                    rows[i].style.display = "none";
+                                }
+                            }
+                        }
+                    }
+                </script>
+
                 <table id="data">
                     <tr>
                         <th>Location</th>
@@ -178,25 +210,26 @@
                     </tr>
                     <!-- populate table with data -->
                     <% for (let i = 0; i < arr.length; i++) { %>
-                        <% if(v[i] >= 10000) {%>
-                        <tr>
-                            <td class = "red"><%= names[i]%></td>
-                            <td class="red"><%= v[i]%></td>
-                        </tr>
-                        <% } %>
-                        <% if(v[i]>= 1000 && v[i] < 10000) {%>
-                        <tr>
-                            <td class = "yellow"><%= names[i]%></td>
-                            <td class="yellow"><%= v[i]%></td>
-                        </tr>
-                        <% } %>
-                        <% if(v[i] < 1000) {%>
-                        <tr>
-                            <td class = "green"><%= names[i]%></td>
-                            <td class="green"><%= v[i]%></td>
-                        </tr>
-                        <% } %>
-                    <% } %>
+                                <% if(v[i] >= 10000) {%>
+                                <tr>
+                                    <td class = "red"><%= names[i]%></td>
+                                    <td class="red"><%= v[i]%></td>
+                                </tr>
+                                <% } %>
+                                <% if(v[i]>= 1000 && v[i] < 10000) {%>
+                                <tr>
+                                    <td class = "yellow"><%= names[i]%></td>
+                                    <td class="yellow"><%= v[i]%></td>
+                                </tr>
+                                <% } %>
+                                <% if(v[i] < 1000) {%>
+                                <tr>
+                                    <td class = "green"><%= names[i]%></td>
+                                    <td class="green"><%= v[i]%></td>
+                                </tr>
+                                <% } %>
+                    <% } %> 
+                        
                 </table>
             </div>
         </main>

@@ -231,6 +231,3 @@ prompt_async();
 app.get('/', (req,res)=> {
     res.render('index', {JSON_weight: JSON_weight, locations: locations});
 });
-app.get('/locations', (req,res) => {
-    res.render('locations', {JSON_weight});
-});

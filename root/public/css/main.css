@@ -29,7 +29,6 @@ table {
 }
 
 table tr {
-    background-color: #f8f8f8;
     border: 1px solid #ddd;
     padding: .35em;
 }
@@ -151,4 +150,16 @@ a{
 .tabs a.active {
     border: 2px solid rgb(185, 151, 91);
     background-color: rgb(185, 151, 91);
+}
+
+.searchBar{
+    padding: 10px;
+    width: 25%;
+    border: none;
+    border-bottom: 2px solid rgb(4, 106, 56);
+    margin-bottom: 1rem;
+}
+
+.searchBar:focus{
+    border: none;
 }
