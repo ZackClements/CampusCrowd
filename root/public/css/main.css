@@ -70,7 +70,7 @@ footer {
 
 .note{
     color: rgb(32, 32, 32);
-    font-family: italic;
+    font-family: monospace;
 }
 
 .timeButtonsBar{
@@ -91,7 +91,7 @@ footer {
 
 }
 .timeButton:hover{
-    opacity: 80%;
+    background-color: rgb(185, 151, 91)
 }
 
 ul{
@@ -161,5 +161,6 @@ a{
 }
 
 .searchBar:focus{
-    border: none;
+    outline: none;
 }
+
