@@ -52,104 +52,8 @@
                 });
             </script>
         </header>
-        <main>
-            <script>
-                let str = <% JSON_weight.substring(1).slice(0, -1) %>;
-                const arr = str.split(",");
-                let k = []; // locations
-                let names = []; // names
-                let v = []; // connections
-                let lat = []; // latitude
-                let lng = []; // longitude
-                let reK = /^[^:]+:\s*/g; // regex for chars before colon
-                let reV = /:(.*)/g; // regex for chars after colon
-
-                // generate locations and connections
-                for (let i=0; i < arr.length; i++){
-                    let str = arr[i];
-                    let _newK = str.match(reK);
-                    let fK = _newK.toString().substring(1).slice(0, -2);
-                    k.push(fK);
-                    let _newV = str.match(reV);
-                    let fV = _newV.toString().substring(1);
-                    v.push(fV);
-                }
-                function buttonClick(element) {
-                    let m = <% time_map %>
-                    if (m.has(element.id)) {
-                        for (let i = 0; i < m.get(element.id).length; i++) {
-                            const location = <% locations[time_map.get(element.id)] %>
-
-                            if (location) {
-                                names.push(location.name);
-                                lat.push(location.lat);
-                                lng.push(location.lng);
-                            }
-                        }
-                    }
-                }
-
-
-                // set max weight (# of connections)
-                let max = Math.max(...v);
-            </script>
-            <div id="tab1" class="tab-content">
-                <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
-                <div id="map"></div>
-            </div>
-                <script>
-                let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
-                    map = new google.maps.Map(document.getElementById("map"), options); // create new map
-                    // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
-                    heatmap = new HeatmapOverlay(map, 
-                    {
-                        "radius": 0.0005,
-                        "maxOpacity": 0.6, 
-                        "scaleRadius": true,
-                        "useLocalExtrema": false,
-                        latField: 'lat',
-                        lngField: 'lng',
-                        valueField: 'weight'
-                    }
-                    );
-                    // set max 
-                    var max = <%- max -%>;
-                    // set weights (connections)
-                    var connections = [];
-                    <%
-                    for (let i=0; i < v.length; i++){
-                        %> connections.push(<%=v[i]%>); <%
-                    }
-                    %>
-                    // set latitudes
-                    var latitude = [];
-                    <%
-                    for (let i=0; i < v.length; i++){
-                        %> latitude.push(<%=lat[i]%>); <%
-                    }
-                    %>
-                    // set longitudes
-                    var longitude = [];
-                    <%
-                    for (let i=0; i < v.length; i++){
-                        %> longitude.push(<%=lng[i]%>); <%
-                    }
-                    %>
-                    // generate data to be passed into setData()
-                    var data = [];
-                    for (let i =0; i < connections.length; i++){
-                        let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
-                        data.push(obj);
-                    }
-                    var wifiData = {
-                    max: max,
-                    data: data
-                    };
-                    heatmap.setData(wifiData);
-                </script>
-
-            <div id="subBar" class="timeButtonsBar">
-                <button class="timeButton" id="00" onclick="buttonClick(this)">1 AM</button>
+        <main> <div id="subBar" class="timeButtonsBar">
+                <button class="timeButton" id="00">1 AM</button>
                 <button  class="timeButton"  type="button">2 AM</button>
                 <button  class="timeButton"  type="button">3 AM</button>
                 <button  class="timeButton"  type="button">4 AM</button>
@@ -174,6 +78,94 @@
                 <button  class="timeButton"  type="button">11 PM</button>
                 <button  class="timeButton"  type="button">12 AM</button>
             </div>
+            <div id="tab1" class="tab-content">
+                <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
+                <div id="map"></div>
+            </div>
+                <script>
+                    let names = [];
+                    let lat = [];
+                    let lng = [];
+                    let m = <%= time_map -%>;
+                    let l = <%= locations -%>;
+
+
+                    const wrapper = document.getElementById('subBar');
+
+                    wrapper.addEventListener('click', (event) => {
+                        const isButton = event.target.nodeName === 'BUTTON';
+                        const whichButton = event.target.id;
+
+                        if (!isButton) {
+                            return;
+                        }
+
+                        if(m.has(whichButton)){
+                            let hour = m.get(whichButton);
+                            for(let i = 0; i < hour.length; i++){
+                                const location = l[m[i]];
+
+                                if(location){
+                                    names.push(location.name);
+                                    lat.push(location.lat);
+                                    lng.push(location.lng);
+                                }
+                            }
+                        }
+                    })
+
+
+                // set max weight (# of connections)
+                //let max = Math.max(...v);
+                let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
+                    map = new google.maps.Map(document.getElementById("map"), options); // create new map
+                    // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
+                    heatmap = new HeatmapOverlay(map, 
+                    {
+                        "radius": 0.0005,
+                        "maxOpacity": 0.6, 
+                        "scaleRadius": true,
+                        "useLocalExtrema": false,
+                        latField: 'lat',
+                        lngField: 'lng',
+                        valueField: 'weight'
+                    }
+                    );
+                    // set weights (connections)
+                    var connections = [];
+
+                    for (let i=0; i < v.length; i++){
+                         connections.push(v[i]);
+                    }
+
+                    // set latitudes
+                    var latitude = [];
+
+                    for (let i=0; i < v.length; i++){
+                         latitude.push(lat[i]);
+                    }
+
+                    // set longitudes
+                    var longitude = [];
+
+                    for (let i=0; i < v.length; i++){
+                        longitude.push(lng[i]);
+                    }
+
+                    // generate data to be passed into setData()
+                    var data = [];
+                    for (let i =0; i < connections.length; i++){
+                        let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
+                        data.push(obj);
+                    }
+                    var wifiData = {
+                    max: max,
+                    data: data
+                    };
+                    heatmap.setData(wifiData);
+                </script>
+
+
             <div id="tab2" class="tab-content" style="display: none;">
                  <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
 
@@ -208,34 +200,7 @@
                     }
                 </script>
 
-                <table id="data">
-                    <tr>
-                        <th>Location</th>
-                        <th>Connections</th>
-                    </tr>
-                    <!-- populate table with data -->
-                    <% for (let i = 0; i < arr.length; i++) { %>
-                                <% if(v[i] >= 10000) {%>
-                                <tr>
-                                    <td class = "red"><%= names[i]%></td>
-                                    <td class="red"><%= v[i]%></td>
-                                </tr>
-                                <% } %>
-                                <% if(v[i]>= 1000 && v[i] < 10000) {%>
-                                <tr>
-                                    <td class = "yellow"><%= names[i]%></td>
-                                    <td class="yellow"><%= v[i]%></td>
-                                </tr>
-                                <% } %>
-                                <% if(v[i] < 1000) {%>
-                                <tr>
-                                    <td class = "green"><%= names[i]%></td>
-                                    <td class="green"><%= v[i]%></td>
-                                </tr>
-                                <% } %>
-                    <% } %> 
-                        
-                </table>
+
             </div>
         </main>
         <footer>
