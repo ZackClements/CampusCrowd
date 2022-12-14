@@ -31,6 +31,7 @@ let reE = /^[^_]+(?=_)/g; // regex for characters before underscore
 let reG = /([^\d]+)/g; // regex for characters before digit
 let reP = /[^|]+/g; //regex for characters between vertical bars
 let reAZ = /[^a-zA-Z]/g; // regex for non alpha
+let time_map = new Map(); // map for storing connections by creation time
 
 async function prompt_async() {
     let valid = false;
@@ -163,7 +164,6 @@ async function generate2(filename) {
         // account for excess lines
         data.pop(); // remove trailing blank line
 
-        let time_map = new Map();
         // Create a map with entries for each of the 24 possible values of time
         for (let i = 0; i < 24; i++) {
             let key = i < 10 ? `0${i}` : `${i}`;
@@ -229,5 +229,5 @@ prompt_async();
 
 // render landing page with JSON data containing the number of connections per building
 app.get('/', (req,res)=> {
-    res.render('index', {JSON_weight: JSON_weight, locations: locations});
+    res.render('index', {JSON_weight: JSON_weight, locations: locations, time_map: time_map});
 });

@@ -16,33 +16,6 @@
     <body>
         <header>
             <h3>Campus Crowd</h3>
-
-            <div id="subBar" class="timeButtonsBar">
-                <button class="timeButton" type="button">1 AM</button>
-                <button  class="timeButton"  type="button">2 AM</button>
-                <button  class="timeButton"  type="button">3 AM</button>
-                <button  class="timeButton"  type="button">4 AM</button>
-                <button  class="timeButton"  type="button">5 AM</button>
-                <button  class="timeButton"  type="button">6 AM</button>
-                <button  class="timeButton"  type="button">7 AM</button>
-                <button  class="timeButton"  type="button">8 AM</button>
-                <button  class="timeButton"  type="button">9 AM</button>
-                <button  class="timeButton"  type="button">10 AM</button>
-                <button  class="timeButton"  type="button">11 AM</button>
-                <button  class="timeButton"  type="button">12 PM</button>
-                <button  class="timeButton"  type="button">1 PM</button>
-                <button  class="timeButton"  type="button">2 PM</button>
-                <button  class="timeButton"  type="button">3 PM</button>
-                <button  class="timeButton"  type="button">4 PM</button>
-                <button  class="timeButton"  type="button">5 PM</button>
-                <button  class="timeButton"  type="button">6 PM</button>
-                <button  class="timeButton"  type="button">7 PM</button>
-                <button  class="timeButton"  type="button">8 PM</button>
-                <button  class="timeButton"  type="button">9 PM</button>
-                <button  class="timeButton"  type="button">10 PM</button>
-                <button  class="timeButton"  type="button">11 PM</button>
-                <button  class="timeButton"  type="button">12 AM</button>
-            </div>
             <div class="tabs">
                 <a href="#tab1" class="active">Map</a>
                 <a href="#tab2">Locations</a>
@@ -80,8 +53,8 @@
             </script>
         </header>
         <main>
-            <%
-                let str = JSON_weight.substring(1).slice(0, -1);
+            <script>
+                let str = <% JSON_weight.substring(1).slice(0, -1) %>;
                 const arr = str.split(",");
                 let k = []; // locations
                 let names = []; // names
@@ -101,19 +74,25 @@
                     let fV = _newV.toString().substring(1);
                     v.push(fV);
                 }
+                function buttonClick(element) {
+                    let m = <% time_map %>
+                    if (m.has(element.id)) {
+                        for (let i = 0; i < m.get(element.id).length; i++) {
+                            const location = <% locations[time_map.get(element.id)] %>
 
-                // fix coordinates to locations
-                for (let i = 0; i < arr.length; i++) {
-                    const location = locations[k[i]];
-                    if (location) {
-                        names.push(location.name);
-                        lat.push(location.lat);
-                        lng.push(location.lng);
+                            if (location) {
+                                names.push(location.name);
+                                lat.push(location.lat);
+                                lng.push(location.lng);
+                            }
+                        }
                     }
                 }
+
+
                 // set max weight (# of connections)
                 let max = Math.max(...v);
-            %>
+            </script>
             <div id="tab1" class="tab-content">
                 <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
                 <div id="map"></div>
@@ -169,6 +148,32 @@
                     heatmap.setData(wifiData);
                 </script>
 
+            <div id="subBar" class="timeButtonsBar">
+                <button class="timeButton" id="00" onclick="buttonClick(this)">1 AM</button>
+                <button  class="timeButton"  type="button">2 AM</button>
+                <button  class="timeButton"  type="button">3 AM</button>
+                <button  class="timeButton"  type="button">4 AM</button>
+                <button  class="timeButton"  type="button">5 AM</button>
+                <button  class="timeButton"  type="button">6 AM</button>
+                <button  class="timeButton"  type="button">7 AM</button>
+                <button  class="timeButton"  type="button">8 AM</button>
+                <button  class="timeButton"  type="button">9 AM</button>
+                <button  class="timeButton"  type="button">10 AM</button>
+                <button  class="timeButton"  type="button">11 AM</button>
+                <button  class="timeButton"  type="button">12 PM</button>
+                <button  class="timeButton"  type="button">1 PM</button>
+                <button  class="timeButton"  type="button">2 PM</button>
+                <button  class="timeButton"  type="button">3 PM</button>
+                <button  class="timeButton"  type="button">4 PM</button>
+                <button  class="timeButton"  type="button">5 PM</button>
+                <button  class="timeButton"  type="button">6 PM</button>
+                <button  class="timeButton"  type="button">7 PM</button>
+                <button  class="timeButton"  type="button">8 PM</button>
+                <button  class="timeButton"  type="button">9 PM</button>
+                <button  class="timeButton"  type="button">10 PM</button>
+                <button  class="timeButton"  type="button">11 PM</button>
+                <button  class="timeButton"  type="button">12 AM</button>
+            </div>
             <div id="tab2" class="tab-content" style="display: none;">
                  <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
 
