@@ -1,5 +1,5 @@
-const {locations} = require("./locations");
-const {connection_time, c} = require("./public/javascript/connection_time");
+const {locations} = require("./public/javascript/locations");
+const {connection_time, connections} = require("./public/javascript/connection_time");
 // dependencies
 const {readFileSync, promises: fsPromises} = require('fs');
 const fs = require('fs');
@@ -177,10 +177,6 @@ async function generate2(filename) {
         for (let i = 0; i < 24; i++) {
             let key = i < 10 ? `0${i}` : `${i}`;
             time_map.set(key, []);
-        }
-
-        for (let i = 0; i < 24; i++) {
-            let key = i < 10 ? `0${i}` : `${i}`;
             new_time_map.set(key, []);
         }
 
@@ -211,7 +207,7 @@ async function generate2(filename) {
                 }
             }
         }
-        c(time_map, new_time_map);
+        connections(time_map, new_time_map);
         // find unique buildings
         for(let z = 0; z < 24; z++){
             let key = z < 10 ? `0${z}` : `${z}`;
@@ -236,6 +232,9 @@ async function generate2(filename) {
 prompt_async();
 
 // render landing page with JSON data containing the number of connections per building
-app.get('/', (req,res)=> {
+app.get('/', (req, res) =>{
+    res.render('home');
+})
+app.get('/index', (req,res)=> {
     res.render('index', {locations: locations, JSON_weight: JSON_weight});
 });

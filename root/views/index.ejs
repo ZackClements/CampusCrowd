@@ -15,10 +15,10 @@
     </head>
     <body>
         <header>
-            <h3>Campus Crowd</h3>
+            <h3><a href="/">Campus Crowd</a></h3>
             <div class="tabs">
                 <a href="#tab1" class="active">Map</a>
-                <a href="#tab2">Locations</a>
+                <a href="#tab2" id="loc">Locations</a>
             </div>
             <script>
                 // Get all tab links
@@ -55,122 +55,162 @@
         <main> <div id="subBar" class="timeButtonsBar">
                 <button class="timeButton" id="0">1 AM</button>
                 <button  class="timeButton"  id="1">2 AM</button>
-                <button  class="timeButton"  id="3">3 AM</button>
-                <button  class="timeButton"  id="4">4 AM</button>
-                <button  class="timeButton"  id="5">5 AM</button>
-                <button  class="timeButton"  type="button">6 AM</button>
-                <button  class="timeButton"  type="button">7 AM</button>
-                <button  class="timeButton"  type="button">8 AM</button>
-                <button  class="timeButton"  type="button">9 AM</button>
-                <button  class="timeButton"  type="button">10 AM</button>
-                <button  class="timeButton"  type="button">11 AM</button>
-                <button  class="timeButton"  type="button">12 PM</button>
-                <button  class="timeButton"  type="button">1 PM</button>
-                <button  class="timeButton"  type="button">2 PM</button>
-                <button  class="timeButton"  type="button">3 PM</button>
-                <button  class="timeButton"  type="button">4 PM</button>
-                <button  class="timeButton"  type="button">5 PM</button>
-                <button  class="timeButton"  type="button">6 PM</button>
-                <button  class="timeButton"  type="button">7 PM</button>
-                <button  class="timeButton"  type="button">8 PM</button>
-                <button  class="timeButton"  type="button">9 PM</button>
-                <button  class="timeButton"  type="button">10 PM</button>
-                <button  class="timeButton"  type="button">11 PM</button>
-                <button  class="timeButton"  type="button">12 AM</button>
+                <button  class="timeButton"  id="2">3 AM</button>
+                <button  class="timeButton"  id="3">4 AM</button>
+                <button  class="timeButton"  id="4">5 AM</button>
+                <button  class="timeButton"  id="5">6 AM</button>
+                <button  class="timeButton"  id="6">7 AM</button>
+                <button  class="timeButton"  id="7">8 AM</button>
+                <button  class="timeButton"  id="8">9 AM</button>
+                <button  class="timeButton"  id="9">10 AM</button>
+                <button  class="timeButton"  id="10">11 AM</button>
+                <button  class="timeButton"  id="11">12 PM</button>
+                <button  class="timeButton"  id="12">1 PM</button>
+                <button  class="timeButton"  id="13">2 PM</button>
+                <button  class="timeButton"  id="14">3 PM</button>
+                <button  class="timeButton"  id="15">4 PM</button>
+                <button  class="timeButton"  id="16">5 PM</button>
+                <button  class="timeButton"  id="17">6 PM</button>
+                <button  class="timeButton"  id="18">7 PM</button>
+                <button  class="timeButton"  id="19">8 PM</button>
+                <button  class="timeButton"  id="20">9 PM</button>
+                <button  class="timeButton"  id="21">10 PM</button>
+                <button  class="timeButton"  id="22">11 PM</button>
+                <button  class="timeButton"  id="23">12 AM</button>
             </div>
             <div id="tab1" class="tab-content">
-                <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
                 <div id="map"></div>
             </div>
 
             <script>
                 <%
-                let str = JSON_weight.substring(1).slice(0, -1);
-                const arr = str.split(",");
+                // Convert JSON_weight into object
                 const obj = JSON.parse(JSON_weight);
-                let k = []; // locations
-                let names = []; // names
-                let v = []; // connections
-                let lat = []; // latitude
-                let lng = []; // longitude
-                let reK = /^[^:]+:\s*/g; // regex for chars before colon
-                let reV = /:(.*)/g; // regex for chars after colon
-                // generate locations and connections
-
-                for (let i=0; i < obj; i++){
-                    let str = arr[i];
-                    let _newK = str.match(reK);
-                    let fK = _newK.toString().substring(1).slice(0, -2);
-                    k.push(fK);
-                    let _newV = str.match(reV);
-                    let fV = _newV.toString().substring(1);
-                    v.push(fV);
-                }
-
-
+                // Stringify in order to safely access below (l. 108 & 109)
                 let objStr = JSON.stringify(obj);
                 let locStr = JSON.stringify(locations);
                 %>
-                    let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
-                        map = new google.maps.Map(document.getElementById("map"), options); // create new map
-                        let wifiData = {};
-                        // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
-                        heatmap = new HeatmapOverlay(map,
-                        {
-                            "radius": 0.0002,
-                            "maxOpacity": 0.6,
-                            "scaleRadius": true,
-                            "useLocalExtrema": false,
-                            latField: 'lat',
-                            lngField: 'lng',
-                            valueField: 'weight'
+                // generate google map
+                let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
+                map = new google.maps.Map(document.getElementById("map"), options); // create new map
+                let wifiData = {};
+                // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
+                heatmap = new HeatmapOverlay(map,
+                    {
+                        "radius": 0.0008,
+                        "maxOpacity": 0.6,
+                        "scaleRadius": true,
+                        "useLocalExtrema": false,
+                        latField: 'lat',
+                        lngField: 'lng',
+                        valueField: 'weight'
+                    }
+                );
+                // obj & locations are equal to the local variables being passed from app.js
+                var obj = <%- objStr -%>;
+                var locations = <%- locStr -%>;
+                // Get an array of location names
+                var location_names = Object.keys(locations);
+
+
+                // Get the hours from the current time
+                let currentTime = new Date();
+                let hours = currentTime.getHours();
+                // Will only show buttons that represent time that has already passed
+                ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23"].forEach(id=>{
+                    if(hours <= id){
+                        document.getElementById(id).style.display = 'none';
+                    }
+                })
+
+                    // General listener that listens for any button clicks within the sub bar
+                    const subBar = document.getElementById('subBar');
+                    subBar.addEventListener('click', (event) => {
+                        const isButton = event.target.nodeName === 'BUTTON';
+                        // Ensures that only button clicks are firing the event code below
+                        if (!isButton) {
+                            return;
                         }
-                        );
-                    var whichButton = {button: "0"};
-                    var obj = <%- objStr -%>;
-                    var locations = <%- locStr -%>;
-                    var location_names = Object.keys(locations);
-                    var v = [];
-                    var names = [];
-                    var lat = [];
-                    var lng = [];
-
-                    for(let i = 0; i < Object.keys(obj[whichButton.button][0]).length; i++){
-                        v.push(obj[whichButton.button][0][i]);
-                        const location = locations[location_names[i]];
-                        if (location) {
-                            names.push(location.name);
-                            lat.push(location.lat);
-                            lng.push(location.lng);
+                        // The button id is used to parse the obj and location data
+                        let whichButton = event.target.id;
+                        // Ensures that the heatmap is updating the visualization depending on which button is clicked
+                        for(const key in wifiData){
+                            delete wifiData[key];
                         }
-                    }
-                    console.log(whichButton.button);
+                        // Colors the selected button and then removed the color if the button is no longer selected
+                        for(let i = 0; i < subBar.children.length; i++){
+                            let child = subBar.children[i];
+                            if(child.classList.contains("timeButtonSelected") && child.id !== whichButton){
+                                child.classList.remove("timeButtonSelected");
+                            }
+                        }
+                        document.getElementById(whichButton).classList.add("timeButtonSelected");
+                        var v = []; // connections array
+                        var names = []; // names array
+                        var lat = []; // latitude array
+                        var lng = []; // longitude array
+                        // keys array where the keys are the building names where a connection occurred during the hour interval
+                        let keys = Object.keys(obj[whichButton][0]);
+
+                        // for each key in obj, push its weight (total # of connections)
+                        // Additionally, if location has data, push location data to corresponding arrays
+                        for(let i = 0; i < Object.keys(obj[whichButton][0]).length; i++){
+                            v.push(obj[whichButton][0][keys[i]]);
+                            const location = locations[location_names[i]];
+                            if (location) {
+                                names.push(location.name);
+                                lat.push(location.lat);
+                                lng.push(location.lng);
+                            }
+                        }
 
 
-                    let max = Math.max(...v);
 
-                    // generate data to be passed into setData()
-                    var data = [];
-                    for (let i =0; i < Object.keys(obj[whichButton.button][0]).length; i++){
-                        let obj1 = {lat: lat[i], lng: lng[i], weight: v[i]};
-                        data.push(obj1);
-                    }
-                    wifiData = {
-                        max: max,
-                        data: data
-                    };
+                        // Gets the maximum number of connections from a building
+                        let max = Math.max(...v);
+                        let data_table = document.getElementById("data");
 
-                    function setButton(btn){
-                        whichButton.button = btn;
-                    }
+                        // Resets table for each new interval loaded
+                        for(let i = 1; i < data_table.children.length; i++){
+                            data_table.removeChild(data_table.children[i]);
+                        }
 
-                    const zeroE = document.getElementById('0');
-                    zeroE.addEventListener('click', (event) => {
-                        whichButton.button = event.target.id;
-                    })
+                        // generate data to be passed into setData()
+                        var data = [];
+                        for (let i =0; i < Object.keys(obj[whichButton][0]).length; i++){
+                            let obj1 = {lat: lat[i], lng: lng[i], weight: v[i]};
+                            data.push(obj1);
 
-                    heatmap.setData(wifiData);
+                            // Creates and styles the location table after the hour interval is selected
+                            let row = document.createElement("tr");
+                            let name_cell = document.createElement("td");
+                            let connections_cell = document.createElement("td");
+                            name_cell.innerHTML = names[i];
+                            connections_cell.innerHTML = v[i];
+                            // colors the table cells depending on the number of building connections
+                            if(v[i] >= 5000){
+                                name_cell.className = "red";
+                                connections_cell.className = "red";
+                            } else if(v[i]>= 1000 && v[i] < 5000){
+                                name_cell.className = "orange";
+                                connections_cell.className = "orange";
+                            } else {
+                                name_cell.className = "green";
+                                connections_cell.className = "green";
+                            }
+                            row.appendChild(name_cell);
+                            row.appendChild(connections_cell);
+                            data_table.appendChild(row);
+                        }
 
+                        wifiData = {
+                            max: max,
+                            data: data
+                        };
+                        heatmap.setData(wifiData);
+                    });
                 </script>
 
 
@@ -212,32 +252,8 @@
                         <th>Location</th>
                         <th>Connections</th>
                     </tr>
-                    <!-- populate table with data -->
-                    <% for (let i = 0; i < arr.length; i++) {
-                    if(v[i] >= 10000) { %>
-                        <tr>
-                            <td class = "red"><% names[i]%></td>
-                            <td class="red"><%v[i]%></td>
-                        </tr>
-                    <% }
-                    if(v[i]>= 1000 && v[i] < 10000) {%>
-                        <tr>
-                            <td class = "yellow"><%= names[i]%></td>
-                            <td class="yellow"><%= v[i]%></td>
-                        </tr>
-                    <% } if(v[i] < 1000) {%>
-                        <tr>
-                            <td class = "green"><%= names[i]%></td>
-                            <td class="green"><%= v[i]%></td>
-                        </tr>
-                    <% }
-                    } %>
-
                 </table>
             </div>
         </main>
-        <footer>
-            <p>ITSC 4155 Capstone Project - Group 15</p>
-        </footer>
     </body>
 </html>

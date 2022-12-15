@@ -11,7 +11,7 @@ header {
     z-index: 1;
     color: white;
     text-align: center;
-    /* border-bottom: 5px solid rgb(185, 151, 91); */
+    border-bottom: 5px solid rgb(185, 151, 91);
 }
 
 main {
@@ -94,6 +94,10 @@ footer {
     background-color: rgb(185, 151, 91)
 }
 
+.timeButtonSelected{
+    background-color: rgb(185, 151, 91)
+}
+
 ul{
     list-style: none;
     text-decoration: none;
@@ -123,20 +127,31 @@ a{
 .red{
     color:red;
 }
-.green{color: green;}
+.green{
+    color: green;
+}
+
+.orange {
+    color: orange;
+}
 
 /* Style the tab links */
+.tabs {
+    margin-bottom: 10px;
+}
+
+
+
 .tabs a {
     display: inline-block;
     padding: 10px 15px;
     background-color: rgb(4, 106, 56);
     color: white;
     text-decoration: none;
-    border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 4px 4px;
     margin-right: 5px;
     width: 750px;
     border: 2px solid rgb(185, 151, 91);
-    border-bottom: none;
 }
 
 /* Style the tab content */
@@ -164,3 +179,18 @@ a{
     outline: none;
 }
 
+/* Style the home page */
+#homePage{
+    text-align: center;
+}
+
+/* Style the home page content */
+.content {
+    margin-top: 150px;
+    background-color: rgb(4,106,56);
+    z-index: 1;
+    color: white;
+    text-align: center;
+    border: 5px solid rgb(185, 151, 91);
+    margin-bottom: 50px;
+}
