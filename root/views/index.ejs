@@ -53,11 +53,11 @@
             </script>
         </header>
         <main> <div id="subBar" class="timeButtonsBar">
-                <button class="timeButton" id="00">1 AM</button>
-                <button  class="timeButton"  type="button">2 AM</button>
-                <button  class="timeButton"  type="button">3 AM</button>
-                <button  class="timeButton"  type="button">4 AM</button>
-                <button  class="timeButton"  type="button">5 AM</button>
+                <button class="timeButton" id="0">1 AM</button>
+                <button  class="timeButton"  id="1">2 AM</button>
+                <button  class="timeButton"  id="3">3 AM</button>
+                <button  class="timeButton"  id="4">4 AM</button>
+                <button  class="timeButton"  id="5">5 AM</button>
                 <button  class="timeButton"  type="button">6 AM</button>
                 <button  class="timeButton"  type="button">7 AM</button>
                 <button  class="timeButton"  type="button">8 AM</button>
@@ -82,87 +82,95 @@
                 <p class="note">Note: The data represented is calculated by number of connections to school wifi, not amount of people in a particular building.</p>
                 <div id="map"></div>
             </div>
-                <script>
-                    let names = [];
-                    let lat = [];
-                    let lng = [];
-                    let m = <%= time_map -%>;
-                    let l = <%= locations -%>;
+
+            <script>
+                <%
+                let str = JSON_weight.substring(1).slice(0, -1);
+                const arr = str.split(",");
+                const obj = JSON.parse(JSON_weight);
+                let k = []; // locations
+                let names = []; // names
+                let v = []; // connections
+                let lat = []; // latitude
+                let lng = []; // longitude
+                let reK = /^[^:]+:\s*/g; // regex for chars before colon
+                let reV = /:(.*)/g; // regex for chars after colon
+                // generate locations and connections
+
+                for (let i=0; i < obj; i++){
+                    let str = arr[i];
+                    let _newK = str.match(reK);
+                    let fK = _newK.toString().substring(1).slice(0, -2);
+                    k.push(fK);
+                    let _newV = str.match(reV);
+                    let fV = _newV.toString().substring(1);
+                    v.push(fV);
+                }
 
 
-                    const wrapper = document.getElementById('subBar');
-
-                    wrapper.addEventListener('click', (event) => {
-                        const isButton = event.target.nodeName === 'BUTTON';
-                        const whichButton = event.target.id;
-
-                        if (!isButton) {
-                            return;
+                let objStr = JSON.stringify(obj);
+                let locStr = JSON.stringify(locations);
+                %>
+                    let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
+                        map = new google.maps.Map(document.getElementById("map"), options); // create new map
+                        let wifiData = {};
+                        // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
+                        heatmap = new HeatmapOverlay(map,
+                        {
+                            "radius": 0.0002,
+                            "maxOpacity": 0.6,
+                            "scaleRadius": true,
+                            "useLocalExtrema": false,
+                            latField: 'lat',
+                            lngField: 'lng',
+                            valueField: 'weight'
                         }
+                        );
+                    var whichButton = {button: "0"};
+                    var obj = <%- objStr -%>;
+                    var locations = <%- locStr -%>;
+                    var location_names = Object.keys(locations);
+                    var v = [];
+                    var names = [];
+                    var lat = [];
+                    var lng = [];
 
-                        if(m.has(whichButton)){
-                            let hour = m.get(whichButton);
-                            for(let i = 0; i < hour.length; i++){
-                                const location = l[m[i]];
-
-                                if(location){
-                                    names.push(location.name);
-                                    lat.push(location.lat);
-                                    lng.push(location.lng);
-                                }
-                            }
+                    for(let i = 0; i < Object.keys(obj[whichButton.button][0]).length; i++){
+                        v.push(obj[whichButton.button][0][i]);
+                        const location = locations[location_names[i]];
+                        if (location) {
+                            names.push(location.name);
+                            lat.push(location.lat);
+                            lng.push(location.lng);
                         }
-                    })
-
-
-                // set max weight (# of connections)
-                //let max = Math.max(...v);
-                let options = {zoom: 15.5, center: new google.maps.LatLng(35.3081, -80.7343)}; // map options
-                    map = new google.maps.Map(document.getElementById("map"), options); // create new map
-                    // generate heatmap (credit to heatmap.js on github https://github.com/pa7/heatmap.js)
-                    heatmap = new HeatmapOverlay(map, 
-                    {
-                        "radius": 0.0005,
-                        "maxOpacity": 0.6, 
-                        "scaleRadius": true,
-                        "useLocalExtrema": false,
-                        latField: 'lat',
-                        lngField: 'lng',
-                        valueField: 'weight'
                     }
-                    );
-                    // set weights (connections)
-                    var connections = [];
+                    console.log(whichButton.button);
 
-                    for (let i=0; i < v.length; i++){
-                         connections.push(v[i]);
-                    }
 
-                    // set latitudes
-                    var latitude = [];
-
-                    for (let i=0; i < v.length; i++){
-                         latitude.push(lat[i]);
-                    }
-
-                    // set longitudes
-                    var longitude = [];
-
-                    for (let i=0; i < v.length; i++){
-                        longitude.push(lng[i]);
-                    }
+                    let max = Math.max(...v);
 
                     // generate data to be passed into setData()
                     var data = [];
-                    for (let i =0; i < connections.length; i++){
-                        let obj = {lat: latitude[i], lng: longitude[i], weight: connections[i]};
-                        data.push(obj);
+                    for (let i =0; i < Object.keys(obj[whichButton.button][0]).length; i++){
+                        let obj1 = {lat: lat[i], lng: lng[i], weight: v[i]};
+                        data.push(obj1);
                     }
-                    var wifiData = {
-                    max: max,
-                    data: data
+                    wifiData = {
+                        max: max,
+                        data: data
                     };
+
+                    function setButton(btn){
+                        whichButton.button = btn;
+                    }
+
+                    const zeroE = document.getElementById('0');
+                    zeroE.addEventListener('click', (event) => {
+                        whichButton.button = event.target.id;
+                    })
+
                     heatmap.setData(wifiData);
+
                 </script>
 
 
@@ -199,8 +207,33 @@
                         }
                     }
                 </script>
+                <table id="data">
+                    <tr>
+                        <th>Location</th>
+                        <th>Connections</th>
+                    </tr>
+                    <!-- populate table with data -->
+                    <% for (let i = 0; i < arr.length; i++) {
+                    if(v[i] >= 10000) { %>
+                        <tr>
+                            <td class = "red"><% names[i]%></td>
+                            <td class="red"><%v[i]%></td>
+                        </tr>
+                    <% }
+                    if(v[i]>= 1000 && v[i] < 10000) {%>
+                        <tr>
+                            <td class = "yellow"><%= names[i]%></td>
+                            <td class="yellow"><%= v[i]%></td>
+                        </tr>
+                    <% } if(v[i] < 1000) {%>
+                        <tr>
+                            <td class = "green"><%= names[i]%></td>
+                            <td class="green"><%= v[i]%></td>
+                        </tr>
+                    <% }
+                    } %>
 
-
+                </table>
             </div>
         </main>
         <footer>

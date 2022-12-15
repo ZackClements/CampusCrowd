@@ -1,5 +1,5 @@
 const {locations} = require("./locations");
-const {connection_time} = require("./src/connection_time");
+const {connection_time, c} = require("./public/javascript/connection_time");
 // dependencies
 const {readFileSync, promises: fsPromises} = require('fs');
 const fs = require('fs');
@@ -15,7 +15,15 @@ app.set('view engine', 'ejs');
 
 // middleware
 app.use(express.static('public'));
+app.use(express.static('src'));
 app.use(express.urlencoded( {extended: true}));
+app.use(function(req, res, next) {
+    if (req.path.endsWith('.js')) {
+        res.set('Content-Type', 'text/javascript');
+    }
+    next();
+});
+
 
 // variables for data generation
 const weight = {}; // object map for buildings and weight (of connections)
@@ -32,6 +40,7 @@ let reG = /([^\d]+)/g; // regex for characters before digit
 let reP = /[^|]+/g; //regex for characters between vertical bars
 let reAZ = /[^a-zA-Z]/g; // regex for non alpha
 let time_map = new Map(); // map for storing connections by creation time
+let new_time_map = new Map();
 
 async function prompt_async() {
     let valid = false;
@@ -170,6 +179,11 @@ async function generate2(filename) {
             time_map.set(key, []);
         }
 
+        for (let i = 0; i < 24; i++) {
+            let key = i < 10 ? `0${i}` : `${i}`;
+            new_time_map.set(key, []);
+        }
+
         // capture words inbetween bars  
         for (i=0; i<data.length; i++){
             let str = data[i];
@@ -197,20 +211,12 @@ async function generate2(filename) {
                 }
             }
         }
+        c(time_map, new_time_map);
         // find unique buildings
-        keys = [... new Set(in_between)];
-
-        // create JSON data structure
-        for (i=0; i<keys.length; i++){
-            weight[keys[i]] = 0;
-        }
-
-        // calculate weight (number of connections per building)
-        for (i=0; i<in_between.length; i++){
-            let k = in_between[i];
-            for (j=0; j<keys.length; j++){
-                if (k == keys[j]){weight[k]++;}
-            }
+        for(let z = 0; z < 24; z++){
+            let key = z < 10 ? `0${z}` : `${z}`;
+            keys = [... new Set(new_time_map.get(key))];
+            weight[z] = keys
         }
 
         // format and display data
@@ -224,10 +230,12 @@ async function generate2(filename) {
         console.log(err);
     }
 }
+
+
 // extract data from user-specified data file
 prompt_async();
 
 // render landing page with JSON data containing the number of connections per building
 app.get('/', (req,res)=> {
-    res.render('index', {JSON_weight: JSON_weight, locations: locations, time_map: time_map});
+    res.render('index', {locations: locations, JSON_weight: JSON_weight});
 });
